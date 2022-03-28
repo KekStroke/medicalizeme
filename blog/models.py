@@ -10,12 +10,11 @@ from django.contrib.auth.models import User
 User=settings.AUTH_USER_MODEL
 
 class Post(models.Model):
-    id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
+    # id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    published = models.BooleanField(default=False)
     moderation = models.BooleanField(default=False)
     view_count = models.PositiveIntegerField(default=0)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -34,12 +33,12 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
+    # id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
     content = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='feed_comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     moderation = models.BooleanField(default=False)
 
@@ -49,4 +48,4 @@ class Comment(models.Model):
         ordering=('date_posted',)
     
     def __str__(self):
-        return f'Comment by {self.author.username}'
+        return f'Comment {self.id} by {self.author.username}'

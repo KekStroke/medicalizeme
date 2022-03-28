@@ -13,7 +13,7 @@ class User(AbstractUser):
         (PATIENT, 'Patient'),
     ]
 
-    id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
+    # id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
     first_login = models.DateTimeField(null=True)
     user_type = models.CharField(max_length=3, choices=USER_TYPE_CHOICES, default=PATIENT)
     # blank for forms, null for database
@@ -31,7 +31,7 @@ class Profile(models.Model):
         (FEMALE, 'Female'),
     ]
 
-    id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
+    # id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
     bio = models.TextField(blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
     years_experience = models.PositiveSmallIntegerField(blank=True, null=True)
