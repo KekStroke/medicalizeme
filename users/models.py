@@ -49,3 +49,22 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse("profile_detail", kwargs={"pk": self.pk})
+
+
+class Feedback(models.Model):
+    # id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
+    content = models.TextField()
+    date_posted = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    parent = models.OneToOneField('self', null=True, blank=True, on_delete=models.CASCADE, related_name='child')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='feed_comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    moderation = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = ("Comment")
+        verbose_name_plural = ("Comments")
+        ordering=('date_posted',)
+    
+    def __str__(self):
+        return f'Comment {self.id} by {self.author.username}'
