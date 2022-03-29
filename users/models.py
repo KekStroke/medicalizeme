@@ -23,6 +23,12 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+
+class Follower(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="follower")
+
+
 class Profile(models.Model):
     MALE = 'M'
     FEMALE = 'F'
@@ -68,3 +74,23 @@ class Feedback(models.Model):
     
     def __str__(self):
         return f'Comment {self.id} by {self.author.username}'
+
+
+class Specialization(models.Model):
+    name = models.CharField(max_length=255)
+
+
+class user_specialization(models.Model):
+    specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    years_of_experience = models.PositiveSmallIntegerField(null=True, blank=True)
+
+
+class Workspace(models.Model):
+    name = models.CharField(max_length=500)
+
+
+class user_workspace(models.Model):
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    years_working = models.PositiveSmallIntegerField(null=True, blank=True)
